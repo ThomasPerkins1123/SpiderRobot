@@ -9,7 +9,7 @@ def centerServos():
 
     for servoPIN in config.legs.values():
         p = GPIO.PWM(servoPIN, 50)
-        p.start(2.5)
+        p.start(7.5)
         p.stop()
         GPIO.cleanup()
 
