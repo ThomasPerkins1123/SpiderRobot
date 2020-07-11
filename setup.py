@@ -1,4 +1,3 @@
-import os
 import pigpio
 
 import config
