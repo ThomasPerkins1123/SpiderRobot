@@ -1,17 +1,16 @@
-import RPi.GPIO as GPIO
+import os
+import pigpio
 
 import config
 
+pi = pigpio.pi()
 
 def centerServos():
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(servoPIN, GPIO.OUT)
-
     for servoPIN in config.legs.values():
-        p = GPIO.PWM(servoPIN, 50)
-        p.start(7.5)
-        p.stop()
-        GPIO.cleanup()
+        if servoPIN != 0:
+            print(servoPIN)
+            pi.set_mode(servoPIN, pigpio.OUTPUT)
+            pi.set_servo_pulsewidth(servoPIN, 1500)
 
 
 if __name__ == "__main__":
