@@ -42,6 +42,7 @@ class Joint:
             self.max = rangeOfMotion[0]
         if len(rangeOfMotion) > 2:
             self.center = rangeOfMotion[2]
+        self.goMiddle()
 
     def goMiddle(self):
         pi.set_servo_pulsewidth(self.pinNumber, self.center)
