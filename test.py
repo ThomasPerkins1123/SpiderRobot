@@ -1,8 +1,8 @@
 from parts import Leg
 import time
 
-legOne = Leg([18, 15, 14], True, True)
-legTwo = Leg([25, 24, 23], False, True)
-#legThree = Leg([18, 15, 14])
-#legFour = Leg([18, 15, 14])
-legOne.wave()
+frontR = Leg([25, 24, 23], True, True)
+backR = Leg([18, 15, 14], False, True)
+frontL = Leg([12, 7, 8], True, False)
+backL = Leg([11, 9, 10], False, False)
+frontR.wave()
