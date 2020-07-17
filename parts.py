@@ -6,7 +6,7 @@ pi = pigpio.pi()
 
 class Leg:
     def __init__(self, pins, front, right):
-        self.hip = Joint(pins[0], [1300, 2200, 400], not front)
+        self.hip = Joint(pins[0], [1300, 2200, 400], front ^ right)
         self.knee = Joint(pins[1], [600, 1800], right)
         self.foot = Joint(pins[2], [800, 2500], not front)
 
