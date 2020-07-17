@@ -6,7 +6,7 @@ pi = pigpio.pi()
 
 class Leg:
     def __init__(self, pins):
-        self.hip = Joint(pins[0], [1200, 1800])
+        self.hip = Joint(pins[0], [1000, 1600, 1300])
         self.knee = Joint(pins[1], [1200, 1800])
         self.foot = Joint(pins[2], [1200, 1800])
 
@@ -33,11 +33,14 @@ class Joint:
     def __init__(self, pinNumber, rangeOfMotion):
         self.pinNumber = pinNumber
         pi.set_mode(pinNumber, pigpio.OUTPUT)
+        self.center = 1500
         self.min = rangeOfMotion[0]
         self.max = rangeOfMotion[1]
+        if len(rangeOfMotion) > 2:
+            self.center = rangeOfMotion[2]
 
     def goMiddle(self):
-        pi.set_servo_pulsewidth(self.pinNumber, 1500)
+        pi.set_servo_pulsewidth(self.pinNumber, self.center)
     
     def goMax(self):
         pi.set_servo_pulsewidth(self.pinNumber, self.max)
