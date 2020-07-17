@@ -1,8 +1,5 @@
-from parts import Joint
+from parts import Leg
 import time
 
-
-joint1 = Joint(18, [1200, 1800])
-joint1.goMax()
-time.sleep(1)
-joint1.goMin()
+legOne = Leg([18, 15, 14])
+legOne.wave()
