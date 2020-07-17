@@ -1,8 +1,8 @@
-from parts import joint
+from parts import Joint
 import time
 
 
-joint1 = joint(18, [1200, 1800])
+joint1 = Joint(18, [1200, 1800])
 joint1.goMax()
-time.sleep()
+time.sleep(1)
 joint1.goMin()
