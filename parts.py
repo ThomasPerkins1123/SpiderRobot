@@ -20,9 +20,11 @@ class Leg:
         self.foot.goMin()
         time.sleep(1)
         self.hip.goMax()
-        time.sleep(1)
+        time.sleep(0.2)
         self.hip.goMin()
-        time.sleep(1)
+        time.sleep(0.2)
+        self.hip.goMiddle()
+        time.sleep(0.5)
 
         self.hip.goMiddle()
         self.knee.goMiddle()
