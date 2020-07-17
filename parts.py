@@ -5,10 +5,10 @@ import pigpio
 pi = pigpio.pi()
 
 class Leg:
-    def __init__(self, pins):
-        self.hip = Joint(pins[0], [1000, 1600, 1300], False)
-        self.knee = Joint(pins[1], [1200, 1800], False)
-        self.foot = Joint(pins[2], [1200, 1800], True)
+    def __init__(self, pins, front, right):
+        self.hip = Joint(pins[0], [1000, 1600, 1300], front)
+        self.knee = Joint(pins[1], [1200, 1800], right)
+        self.foot = Joint(pins[2], [1200, 1800], right)
 
     def wave(self):
         self.hip.goMiddle()
