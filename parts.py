@@ -14,7 +14,7 @@ class Spider:
 
 class Leg:
     def __init__(self, pins, front, right):
-        self.hip = Joint(pins[0], [200, 500, 500], front ^ right)
+        self.hip = Joint(pins[0], [600, 500, 500], front ^ right)
         self.knee = Joint(pins[1], [300, 1000], not (front ^ right))
         self.foot = Joint(pins[2], [700, 900, 100], front ^ right)
 
