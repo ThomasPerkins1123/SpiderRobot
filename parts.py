@@ -26,11 +26,15 @@ class Spider:
         self.back_left = Leg([legPins["bl-1"], legPins["bl-2"], legPins["bl-3"]], False, False)
         self.legs = {"front_right": self.front_right, "front_left": self.front_left, "back_right": self.back_right, "back_left": self.back_left}
 
-    def wave(self, leg):
+    def raiseLeg(self, leg):
         opositeLeg = getOpositeLeg(leg) 
         self.legs[opositeLeg].knee.goTo(130)
         self.legs[opositeLeg].foot.goTo(70)
         self.legs[leg].knee.goTo(50)
+
+    def wave(self, leg):
+        opositeLeg = getOpositeLeg(leg)
+        self.raiseLeg(leg)
         time.sleep(0.2)
         self.legs[leg].wave()
         self.legs[opositeLeg].foot.goTo(90)
