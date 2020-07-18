@@ -7,21 +7,21 @@ pi = pigpio.pi()
 
 class Spider:
     def __init__(self):
-        self.frontRight = Leg([legPins["fr-1"], legPins["fr-2"], legPins["fr-3"]], True, True)
-        self.frontLeft = Leg([legPins["fl-1"], legPins["fl-2"], legPins["fl-3"]], True, False)
-        self.backRight = Leg([legPins["br-1"], legPins["br-2"], legPins["br-3"]], False, True)
-        self.backLeft = Leg([legPins["bl-1"], legPins["bl-2"], legPins["bl-3"]], False, False)
-        self.legs = {"frontRight": self.frontRight, "frontLeft": self.frontLeft, "backRight": self.backRight, "backLeft": self.backLeft}
+        self.front_right = Leg([legPins["fr-1"], legPins["fr-2"], legPins["fr-3"]], True, True)
+        self.front_left = Leg([legPins["fl-1"], legPins["fl-2"], legPins["fl-3"]], True, False)
+        self.back_right = Leg([legPins["br-1"], legPins["br-2"], legPins["br-3"]], False, True)
+        self.back_left = Leg([legPins["bl-1"], legPins["bl-2"], legPins["bl-3"]], False, False)
+        self.legs = {"front_right": self.front_right, "front_left": self.front_left, "back_right": self.back_right, "back_left": self.back_left}
 
     def wave(self):
-        self.backLeft.knee.goTo(130)
-        self.backLeft.foot.goTo(70)
-        self.frontRight.knee.goTo(50)
+        self.back_left.knee.goTo(130)
+        self.back_left.foot.goTo(70)
+        self.front_right.knee.goTo(50)
         time.sleep(0.2)
-        self.frontRight.wave()
-        self.backLeft.foot.goTo(90)
+        self.front_right.wave()
+        self.back_left.foot.goTo(90)
         time.sleep(0.1)
-        self.backLeft.knee.goTo(90)
+        self.back_left.knee.goTo(90)
     
     def bounce(self, count):
         for i in range(0, count):
@@ -56,7 +56,6 @@ class Leg:
         self.hip.goMiddle()
         self.knee.goMiddle()
         self.foot.goMiddle()
-
 
 
 class Joint:
