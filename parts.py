@@ -4,6 +4,13 @@ import pigpio
 
 pi = pigpio.pi()
 
+class Spider:
+    def __init__(self):
+        self.frontRight = Leg([25, 24, 23], True, True)
+        self.frontLeft = Leg([11, 9, 10], True, False)
+        self.backRight = Leg([18, 15, 14], False, True)
+        self.backLeft = Leg([12, 7, 8], False, False)
+
 class Leg:
     def __init__(self, pins, front, right):
         self.hip = Joint(pins[0], [200, 500, 500], front ^ right)
