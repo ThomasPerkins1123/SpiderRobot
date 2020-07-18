@@ -13,6 +13,16 @@ class Spider:
         self.backLeft = Leg([legPins["bl-1"], legPins["bl-2"], legPins["bl-3"]], False, False)
         self.legs = {"frontRight": self.frontRight, "frontLeft": self.frontLeft, "backRight": self.backRight, "backLeft": self.backLeft}
 
+    def wave(self):
+        self.backLeft.knee.goTo(130)
+        self.backLeft.foot.goTo(70)
+        self.frontRight.knee.goTo(50)
+        time.sleep(0.2)
+        self.frontRight.wave()
+        self.backLeft.foot.goTo(90)
+        time.sleep(0.1)
+        self.backLeft.knee.goTo(90)
+    
     def bounce(self, count):
         for i in range(0, count):
             for leg in self.legs.values():
@@ -34,24 +44,19 @@ class Leg:
         self.foot = Joint(pins[2], [700, 900, 100], front ^ right)
 
     def wave(self):
-        self.hip.goMiddle()
-        self.knee.goMiddle()
-        self.foot.goMiddle()
-       
-        time.sleep(1)
         self.knee.goMax()
         self.foot.goMin()
-        time.sleep(1)
+        time.sleep(0.5)
         self.hip.goMax()
         time.sleep(0.2)
         self.hip.goMin()
         time.sleep(0.2)
         self.hip.goMiddle()
         time.sleep(0.5)
-
         self.hip.goMiddle()
         self.knee.goMiddle()
         self.foot.goMiddle()
+
 
 
 class Joint:
