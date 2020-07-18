@@ -5,6 +5,19 @@ import pigpio
 
 pi = pigpio.pi()
 
+def getOposite(string):
+    if string == "front":
+        return "back"
+    if string == "back":
+        return "front"
+    if string == "left":
+        return "right"
+    if string == "right":
+        return "left"
+
+def getOpositeLeg(leg):
+    return getOposite(leg.split("_")[0]) + "_"  + getOposite(leg.split("_")[1])
+
 class Spider:
     def __init__(self):
         self.front_right = Leg([legPins["fr-1"], legPins["fr-2"], legPins["fr-3"]], True, True)
@@ -13,15 +26,16 @@ class Spider:
         self.back_left = Leg([legPins["bl-1"], legPins["bl-2"], legPins["bl-3"]], False, False)
         self.legs = {"front_right": self.front_right, "front_left": self.front_left, "back_right": self.back_right, "back_left": self.back_left}
 
-    def wave(self):
-        self.back_left.knee.goTo(130)
-        self.back_left.foot.goTo(70)
-        self.front_right.knee.goTo(50)
+    def wave(self, leg):
+        opositeLeg = getOpositeLeg(leg) 
+        self.legs[opositeLeg].knee.goTo(130)
+        self.legs[opositeLeg].foot.goTo(70)
+        self.legs[leg].knee.goTo(50)
         time.sleep(0.2)
-        self.front_right.wave()
-        self.back_left.foot.goTo(90)
+        self.legs[leg].wave()
+        self.legs[opositeLeg].foot.goTo(90)
         time.sleep(0.1)
-        self.back_left.knee.goTo(90)
+        self.legs[opositeLeg].knee.goTo(90)
     
     def bounce(self, count):
         for i in range(0, count):
