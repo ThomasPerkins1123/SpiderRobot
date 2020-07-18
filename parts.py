@@ -1,4 +1,5 @@
 import time
+from config import legPins
 import pigpio
 
 
@@ -6,10 +7,10 @@ pi = pigpio.pi()
 
 class Spider:
     def __init__(self):
-        self.frontRight = Leg([25, 24, 23], True, True)
-        self.frontLeft = Leg([11, 9, 10], True, False)
-        self.backRight = Leg([18, 15, 14], False, True)
-        self.backLeft = Leg([12, 7, 8], False, False)
+        self.frontRight = Leg([legPins["fr-1"], legPins["fr-2"], legPins["fr-3"]], True, True)
+        self.frontLeft = Leg([legPins["fl-1"], legPins["fl-2"], legPins["fl-3"]], True, False)
+        self.backRight = Leg([legPins["br-1"], legPins["br-2"], legPins["br-3"]], False, True)
+        self.backLeft = Leg([legPins["bl-1"], legPins["bl-2"], legPins["bl-3"]], False, False)
 
 class Leg:
     def __init__(self, pins, front, right):
