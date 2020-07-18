@@ -11,7 +11,22 @@ class Spider:
         self.frontLeft = Leg([legPins["fl-1"], legPins["fl-2"], legPins["fl-3"]], True, False)
         self.backRight = Leg([legPins["br-1"], legPins["br-2"], legPins["br-3"]], False, True)
         self.backLeft = Leg([legPins["bl-1"], legPins["bl-2"], legPins["bl-3"]], False, False)
+        self.legs = {"frontRight": self.frontRight, "frontLeft": self.frontLeft, "backRight": self.backRight, "backLeft": self.backLeft}
 
+    def bounce(self, count):
+        for i in range(0, count):
+            for leg in self.legs.values():
+                leg.knee.goTo(0)
+                leg.foot.goTo(110)
+            time.sleep(0.5)
+            for leg in self.legs.values():
+                leg.knee.goTo(110)
+                leg.foot.goTo(70)
+            time.sleep(0.5)
+
+        for leg in self.legs.values():
+            leg.knee.goTo(90)
+            leg.foot.goTo(90)
 class Leg:
     def __init__(self, pins, front, right):
         self.hip = Joint(pins[0], [600, 500, 500], front ^ right)
