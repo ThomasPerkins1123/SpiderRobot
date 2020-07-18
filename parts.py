@@ -42,6 +42,7 @@ class Leg:
 class Joint:
     def __init__(self, pinNumber, rangeOfMotion, flipped):
         self.pinNumber = pinNumber
+        self.flipped = flipped
         pi.set_mode(pinNumber, pigpio.OUTPUT)
         self.center = 1500
         if len(rangeOfMotion) > 2:
@@ -70,3 +71,25 @@ class Joint:
     def goMin(self):
         pi.set_servo_pulsewidth(self.pinNumber, self.min)
 
+    def printStats(self):
+        print("Min: " + str(self.min))
+        print("Max: " + str(self.max))
+        print("Center: " + str(self.center))
+
+    def goTo(self, angle):
+        angle = angle / 180
+        angle -= 0.5
+        if self.flipped:
+            angle = angle * -2000
+        else:
+            angle = angle * 2000
+        angle += self.center
+        if angle < self.max and self.flipped:
+            angle = self.max
+        if angle > self.min and self.flipped:
+            angle = self.min
+        if angle > self.max and not self.flipped:
+            angle = self.max
+        if angle < self.min and not self.flipped:
+            angle = self.min
+        pi.set_servo_pulsewidth(self.pinNumber, angle)
