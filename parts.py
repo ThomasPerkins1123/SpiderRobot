@@ -26,6 +26,43 @@ class Spider:
         self.back_left = Leg([legPins["bl-1"], legPins["bl-2"], legPins["bl-3"]], False, False)
         self.legs = {"front_right": self.front_right, "front_left": self.front_left, "back_right": self.back_right, "back_left": self.back_left}
 
+    def walk(self):
+        self.moveLegForward("back_left")
+        self.moveLegForward("back_right")
+        self.back_right.knee.goTo(100)
+        self.back_left.knee.goTo(100)
+        time.sleep(0.3)
+        self.front_right.hip.goMin()
+        self.front_left.hip.goMin()
+        self.back_right.hip.goMiddle()
+        self.back_left.hip.goMiddle()
+        self.moveLegBack("front_right")
+        self.moveLegBack("front_left")
+        self.back_right.knee.goTo(90)
+        self.back_left.knee.goTo(90)
+
+
+    def moveLegBack(self, leg):
+        self.raiseLeg(leg)
+        self.legs[leg].hip.goMiddle()
+        self.legs[leg].knee.goMiddle()
+        self.legs[leg].foot.goMiddle()
+
+    def moveLegForward(self, leg):
+        self.raiseLeg(leg)
+        self.legs[leg].hip.goTo(90)
+        time.sleep(0.2)
+        self.legs[leg].knee.goTo(120)
+        self.legs[leg].foot.goTo(50)
+        time.sleep(0.2)
+        self.legs[leg].hip.goTo(0)
+        time.sleep(0.2)
+        self.legs[leg].knee.goMiddle()
+        self.legs[leg].foot.goMiddle()
+        time.sleep(0.2)
+        self.legs[getOpositeLeg(leg)].knee.goMiddle()
+        self.legs[getOpositeLeg(leg)].foot.goMiddle()
+    
     def raiseLeg(self, leg):
         opositeLeg = getOpositeLeg(leg) 
         self.legs[opositeLeg].knee.goTo(130)
