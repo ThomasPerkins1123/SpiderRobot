@@ -1,11 +1,12 @@
 import time
-from config import legPins
+from config import leg_pins
 import pigpio
 
 
 pi = pigpio.pi()
 
-def getOposite(string):
+
+def get_opposite(string):
     if string == "front":
         return "back"
     if string == "back":
@@ -15,83 +16,86 @@ def getOposite(string):
     if string == "right":
         return "left"
 
-def getOpositeLeg(leg):
-    return getOposite(leg.split("_")[0]) + "_"  + getOposite(leg.split("_")[1])
+
+def get_opposite_leg(leg):
+    return get_opposite(leg.split("_")[0]) + "_" + get_opposite(leg.split("_")[1])
+
 
 class Spider:
     def __init__(self):
-        self.front_right = Leg([legPins["fr-1"], legPins["fr-2"], legPins["fr-3"]], True, True)
-        self.front_left = Leg([legPins["fl-1"], legPins["fl-2"], legPins["fl-3"]], True, False)
-        self.back_right = Leg([legPins["br-1"], legPins["br-2"], legPins["br-3"]], False, True)
-        self.back_left = Leg([legPins["bl-1"], legPins["bl-2"], legPins["bl-3"]], False, False)
+        self.front_right = Leg([leg_pins["fr-1"], leg_pins["fr-2"], leg_pins["fr-3"]], True, True)
+        self.front_left = Leg([leg_pins["fl-1"], leg_pins["fl-2"], leg_pins["fl-3"]], True, False)
+        self.back_right = Leg([leg_pins["br-1"], leg_pins["br-2"], leg_pins["br-3"]], False, True)
+        self.back_left = Leg([leg_pins["bl-1"], leg_pins["bl-2"], leg_pins["bl-3"]], False, False)
         self.legs = {"front_right": self.front_right, "front_left": self.front_left, "back_right": self.back_right, "back_left": self.back_left}
 
     def walk(self):
-        self.moveLegForward("back_left")
-        self.moveLegForward("back_right")
-        self.back_right.knee.goTo(100)
-        self.back_left.knee.goTo(100)
+        self.move_leg_forward("back_left")
+        self.move_leg_forward("back_right")
+        self.back_right.knee.go_to(100)
+        self.back_left.knee.go_to(100)
         time.sleep(0.3)
-        self.front_right.hip.goMin()
-        self.front_left.hip.goMin()
-        self.back_right.hip.goMiddle()
-        self.back_left.hip.goMiddle()
-        self.moveLegBack("front_right")
-        self.moveLegBack("front_left")
-        self.back_right.knee.goTo(90)
-        self.back_left.knee.goTo(90)
+        self.front_right.hip.go_min()
+        self.front_left.hip.go_min()
+        self.back_right.hip.go_middle()
+        self.back_left.hip.go_middle()
+        self.move_leg_back("front_right")
+        self.move_leg_back("front_left")
+        self.back_right.knee.go_to(90)
+        self.back_left.knee.go_to(90)
 
+    def move_leg_back(self, leg):
+        self.raise_leg(leg)
+        self.legs[leg].hip.go_middle()
+        self.legs[leg].knee.go_middle()
+        self.legs[leg].foot.go_middle()
 
-    def moveLegBack(self, leg):
-        self.raiseLeg(leg)
-        self.legs[leg].hip.goMiddle()
-        self.legs[leg].knee.goMiddle()
-        self.legs[leg].foot.goMiddle()
+    def move_leg_forward(self, leg):
+        self.raise_leg(leg)
+        self.legs[leg].hip.go_to(90)
+        time.sleep(0.2)
+        self.legs[leg].knee.go_to(120)
+        self.legs[leg].foot.go_to(50)
+        time.sleep(0.2)
+        self.legs[leg].hip.go_to(0)
+        time.sleep(0.2)
+        self.legs[leg].knee.go_middle()
+        self.legs[leg].foot.go_middle()
+        time.sleep(0.2)
+        self.legs[get_opposite_leg(leg)].knee.go_middle()
+        self.legs[get_opposite_leg(leg)].foot.go_middle()
 
-    def moveLegForward(self, leg):
-        self.raiseLeg(leg)
-        self.legs[leg].hip.goTo(90)
-        time.sleep(0.2)
-        self.legs[leg].knee.goTo(120)
-        self.legs[leg].foot.goTo(50)
-        time.sleep(0.2)
-        self.legs[leg].hip.goTo(0)
-        time.sleep(0.2)
-        self.legs[leg].knee.goMiddle()
-        self.legs[leg].foot.goMiddle()
-        time.sleep(0.2)
-        self.legs[getOpositeLeg(leg)].knee.goMiddle()
-        self.legs[getOpositeLeg(leg)].foot.goMiddle()
-    
-    def raiseLeg(self, leg):
-        opositeLeg = getOpositeLeg(leg) 
-        self.legs[opositeLeg].knee.goTo(130)
-        self.legs[opositeLeg].foot.goTo(70)
-        self.legs[leg].knee.goTo(50)
+    def raise_leg(self, leg):
+        opposite_leg = get_opposite_leg(leg)
+        self.legs[opposite_leg].knee.go_to(130)
+        self.legs[opposite_leg].foot.go_to(70)
+        self.legs[leg].knee.go_to(50)
 
     def wave(self, leg):
-        opositeLeg = getOpositeLeg(leg)
-        self.raiseLeg(leg)
+        opposite_leg = get_opposite_leg(leg)
+        self.raise_leg(leg)
         time.sleep(0.2)
         self.legs[leg].wave()
-        self.legs[opositeLeg].foot.goTo(90)
+        self.legs[opposite_leg].foot.go_to(90)
         time.sleep(0.1)
-        self.legs[opositeLeg].knee.goTo(90)
-    
+        self.legs[opposite_leg].knee.go_to(90)
+
     def bounce(self, count):
         for i in range(0, count):
             for leg in self.legs.values():
-                leg.knee.goTo(0)
-                leg.foot.goTo(110)
+                leg.knee.go_to(0)
+                leg.foot.go_to(110)
             time.sleep(0.5)
             for leg in self.legs.values():
-                leg.knee.goTo(110)
-                leg.foot.goTo(70)
+                leg.knee.go_to(110)
+                leg.foot.go_to(70)
             time.sleep(0.5)
 
         for leg in self.legs.values():
-            leg.knee.goTo(90)
-            leg.foot.goTo(90)
+            leg.knee.go_to(90)
+            leg.foot.go_to(90)
+
+
 class Leg:
     def __init__(self, pins, front, right):
         self.hip = Joint(pins[0], [600, 500, 500], front ^ right)
@@ -99,58 +103,58 @@ class Leg:
         self.foot = Joint(pins[2], [700, 900, 100], front ^ right)
 
     def wave(self):
-        self.knee.goMax()
-        self.foot.goMin()
+        self.knee.go_max()
+        self.foot.go_min()
         time.sleep(0.5)
-        self.hip.goMax()
+        self.hip.go_max()
         time.sleep(0.2)
-        self.hip.goMin()
+        self.hip.go_min()
         time.sleep(0.2)
-        self.hip.goMiddle()
+        self.hip.go_middle()
         time.sleep(0.5)
-        self.hip.goMiddle()
-        self.knee.goMiddle()
-        self.foot.goMiddle()
+        self.hip.go_middle()
+        self.knee.go_middle()
+        self.foot.go_middle()
 
 
 class Joint:
-    def __init__(self, pinNumber, rangeOfMotion, flipped):
-        self.pinNumber = pinNumber
+    def __init__(self, pin_number, range_of_motion, flipped):
+        self.pinNumber = pin_number
         self.flipped = flipped
-        pi.set_mode(pinNumber, pigpio.OUTPUT)
+        pi.set_mode(pin_number, pigpio.OUTPUT)
         self.center = 1500
-        if len(rangeOfMotion) > 2:
+        if len(range_of_motion) > 2:
             if not flipped:
-                self.center += rangeOfMotion[2]
+                self.center += range_of_motion[2]
             else:
-                self.center -= rangeOfMotion[2]
+                self.center -= range_of_motion[2]
 
         self.min = self.center
         self.max = self.center
 
         if not flipped:
-            self.min -= rangeOfMotion[0]
-            self.max += rangeOfMotion[1]
+            self.min -= range_of_motion[0]
+            self.max += range_of_motion[1]
         else:
-            self.min += rangeOfMotion[0]
-            self.max -= rangeOfMotion[1]
-        self.goMiddle()
+            self.min += range_of_motion[0]
+            self.max -= range_of_motion[1]
+        self.go_middle()
 
-    def goMiddle(self):
+    def go_middle(self):
         pi.set_servo_pulsewidth(self.pinNumber, self.center)
-    
-    def goMax(self):
+
+    def go_max(self):
         pi.set_servo_pulsewidth(self.pinNumber, self.max)
 
-    def goMin(self):
+    def go_min(self):
         pi.set_servo_pulsewidth(self.pinNumber, self.min)
 
-    def printStats(self):
+    def print_stats(self):
         print("Min: " + str(self.min))
         print("Max: " + str(self.max))
         print("Center: " + str(self.center))
 
-    def goTo(self, angle):
+    def go_to(self, angle):
         angle = angle / 180
         angle -= 0.5
         if self.flipped:

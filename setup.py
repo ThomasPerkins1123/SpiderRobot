@@ -4,7 +4,8 @@ import config
 
 pi = pigpio.pi()
 
-def centerServos():
+
+def center_servos():
     for servoPIN in config.legs.values():
         if servoPIN != 0:
             print(servoPIN)
@@ -13,4 +14,4 @@ def centerServos():
 
 
 if __name__ == "__main__":
-    centerServos()
+    center_servos()
