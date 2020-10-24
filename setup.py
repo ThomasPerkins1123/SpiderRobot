@@ -1,8 +1,11 @@
 import pigpio
+import time
 
 import config
 
+
 pi = pigpio.pi()
+
 
 if __name__ == "__main__":
     while True:
